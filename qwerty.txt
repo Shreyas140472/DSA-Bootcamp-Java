@@ -1,0 +1,654 @@
+========================================================
+DOCKER IMAGE CREATION & PUSH TO DOCKER HUB - CHEAT SHEET
+========================================================
+
+Experiment 5:
+Create a Docker image for an application stored in local repository
+and run the application using Docker image.
+
+--------------------------------------------------------
+STEP 1 - CREATE PROJECT FOLDER
+--------------------------------------------------------
+
+Create folder:
+
+Devops/dockerimage
+
+--------------------------------------------------------
+STEP 2 - OPEN FOLDER IN VS CODE
+--------------------------------------------------------
+
+Open "dockerimage" folder in VS Code.
+
+Create 2 files:
+
+1. sample.py
+2. Dockerfile
+
+--------------------------------------------------------
+STEP 3 - WRITE PYTHON PROGRAM
+--------------------------------------------------------
+
+File: sample.py
+
+--------------------------------------------------------
+print("Hello World")
+--------------------------------------------------------
+
+--------------------------------------------------------
+STEP 4 - WRITE DOCKERFILE
+--------------------------------------------------------
+
+File: Dockerfile
+
+--------------------------------------------------------
+FROM python
+
+WORKDIR /app
+
+COPY . /app
+
+CMD ["python", "sample.py"]
+--------------------------------------------------------
+
+--------------------------------------------------------
+STEP 5 - OPEN TERMINAL IN VS CODE
+--------------------------------------------------------
+
+Open terminal inside dockerimage directory.
+
+--------------------------------------------------------
+STEP 6 - RUN PYTHON FILE NORMALLY
+--------------------------------------------------------
+
+Command:
+
+py sample.py
+
+Output:
+
+Hello World
+
+Purpose:
+Checks whether Python program works properly.
+
+--------------------------------------------------------
+STEP 7 - BUILD DOCKER IMAGE
+--------------------------------------------------------
+
+Command:
+
+docker build -t test.1 .
+
+Explanation:
+docker build  -> builds image
+-t test.1    -> image name
+.             -> current directory
+
+--------------------------------------------------------
+STEP 8 - RUN DOCKER CONTAINER
+--------------------------------------------------------
+
+Command:
+
+docker run --name cont1 test.1
+
+Explanation:
+docker run      -> runs image
+--name cont1    -> container name
+test.1          -> image name
+
+--------------------------------------------------------
+STEP 9 - VERIFY OUTPUT
+--------------------------------------------------------
+
+Expected Output:
+
+Hello World
+
+Meaning:
+Container executed successfully.
+
+--------------------------------------------------------
+STEP 10 - CHECK DOCKER DESKTOP
+--------------------------------------------------------
+
+Open Docker Desktop.
+
+Verify:
+1. Image named test.1
+2. Container named cont1
+
+--------------------------------------------------------
+STEP 11 - COPY IMAGE TAG
+--------------------------------------------------------
+
+Click image "test.1" in Docker Desktop.
+
+Copy image tag.
+
+Example:
+
+test.1:latest
+
+OR
+
+c3d0fc458fa
+
+--------------------------------------------------------
+STEP 12 - TAG IMAGE FOR DOCKER HUB
+--------------------------------------------------------
+
+Command:
+
+docker image tag <copied_image_tag> <username>/test.1
+
+Example:
+
+docker image tag test.1 ayush05/test.1
+
+Explanation:
+<username> = Docker Hub username
+
+--------------------------------------------------------
+STEP 13 - PUSH IMAGE TO DOCKER HUB
+--------------------------------------------------------
+
+Command:
+
+docker push <username>/test.1:latest
+
+Example:
+
+docker push ayush05/test.1:latest
+
+--------------------------------------------------------
+STEP 14 - VERIFY ON DOCKER HUB
+--------------------------------------------------------
+
+Open:
+1. Docker Desktop
+2. Docker Hub website
+
+Search:
+
+<username>/test.1
+
+Example:
+
+ayush05/test.1
+
+Verify repository uploaded successfully.
+
+========================================================
+COMPLETE COMMAND FLOW
+========================================================
+
+py sample.py
+
+docker build -t test.1 .
+
+docker run --name cont1 test.1
+
+docker image tag test.1 <username>/test.1
+
+docker push <username>/test.1:latest
+
+========================================================
+IMPORTANT FILES
+========================================================
+
+sample.py
+
+print("Hello World")
+
+--------------------------------------------------------
+
+Dockerfile
+
+FROM python
+
+WORKDIR /app
+
+COPY . /app
+
+CMD ["python", "sample.py"]
+
+========================================================
+IMPORTANT TERMS FOR VIVA
+========================================================
+
+Docker Image     -> Blueprint/template for container
+Docker Container -> Running instance of image
+Dockerfile       -> File containing Docker instructions
+WORKDIR          -> Sets working directory inside container
+COPY             -> Copies files into container
+CMD              -> Default command executed when container starts
+Docker Hub       -> Cloud repository for Docker images
+Tag              -> Name/version of Docker image
+
+========================================================
+MOST IMPORTANT COMMANDS
+========================================================
+
+Build Image:
+
+docker build -t test.1 .
+
+--------------------------------------------------------
+
+Run Container:
+
+docker run --name cont1 test.1
+
+--------------------------------------------------------
+
+Tag Image:
+
+docker image tag test.1 username/test.1
+
+--------------------------------------------------------
+
+Push Image:
+
+docker push username/test.1:latest
+
+========================================================
+EXPECTED FINAL OUTPUT
+========================================================
+
+Hello World
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+========================================================
+JENKINS + DOCKER PIPELINE CHEAT SHEET
+========================================================
+
+Experiment 6:
+Create a CI/CD pipeline using Jenkins to build and push
+Docker image from GitHub repository to Docker Hub.
+
+========================================================
+STEP 1 - CREATE GITHUB REPOSITORY
+========================================================
+
+Go to GitHub and create a new repository.
+
+Repository Name:
+
+Dockerprog
+
+Copy repository URL.
+
+Example:
+
+https://github.com/username/Dockerprog.git
+
+========================================================
+STEP 2 - CLONE REPOSITORY
+========================================================
+
+Open Git Bash and type:
+
+git clone <your_repo_url>
+
+Example:
+
+git clone https://github.com/username/Dockerprog.git
+
+========================================================
+STEP 3 - OPEN PROJECT IN VS CODE
+========================================================
+
+Open Dockerprog folder in VS Code.
+
+Create 2 files:
+
+1. Dockerfile
+2. sample.py
+
+========================================================
+STEP 4 - WRITE PYTHON PROGRAM
+========================================================
+
+File: sample.py
+
+--------------------------------------------------------
+
+print("Hello World")
+
+--------------------------------------------------------
+
+========================================================
+STEP 5 - WRITE DOCKERFILE
+========================================================
+
+File: Dockerfile
+
+--------------------------------------------------------
+
+FROM python
+
+WORKDIR /app
+
+COPY . /app
+
+CMD ["python", "sample.py"]
+
+--------------------------------------------------------
+
+========================================================
+STEP 6 - COMMIT AND PUSH CODE TO GITHUB
+========================================================
+
+Commands:
+
+git add .
+
+git commit -m "Initial Commit"
+
+git push origin main
+
+========================================================
+STEP 7 - BUILD DOCKER IMAGE LOCALLY
+========================================================
+
+Command:
+
+docker build -t test.2 .
+
+Explanation:
+test.2 = image name
+
+========================================================
+STEP 8 - RUN DOCKER CONTAINER
+========================================================
+
+Command:
+
+docker run --name cont2 test.2
+
+Explanation:
+cont2 = container name
+
+========================================================
+STEP 9 - VIEW AVAILABLE IMAGES
+========================================================
+
+Command:
+
+docker images
+
+Purpose:
+Lists all Docker images available in local device.
+
+Example Output:
+
+IMAGE          ID           SIZE
+test.2         cb3ded3a739a
+
+Copy the IMAGE ID.
+
+Example:
+
+cb3ded3a739a
+
+========================================================
+STEP 10 - TAG IMAGE FOR DOCKER HUB
+========================================================
+
+Command:
+
+docker tag cb3ded3a739a ayush05/test.2
+
+Explanation:
+ayush05 = Docker Hub username
+
+========================================================
+STEP 11 - PUSH IMAGE TO DOCKER HUB
+========================================================
+
+Command:
+
+docker push ayush05/test.2:latest
+
+========================================================
+STEP 12 - OPEN JENKINS
+========================================================
+
+Open Jenkins in browser.
+
+Go to:
+
+Manage Jenkins
+→ Plugins
+
+========================================================
+STEP 13 - INSTALL REQUIRED PLUGINS
+========================================================
+
+Install/Update these plugins:
+
+1. CloudBees Docker Custom Build Environment
+2. Docker
+3. Docker Pipelines
+4. Docker Compose Build Steps
+
+========================================================
+STEP 14 - CREATE NEW PIPELINE PROJECT
+========================================================
+
+Create New Item
+
+Project Name:
+
+Doc2
+
+Select:
+
+Pipeline
+
+Click OK.
+
+========================================================
+STEP 15 - ADD PIPELINE SCRIPT
+========================================================
+
+Paste this Jenkins Pipeline Script:
+
+--------------------------------------------------------
+
+pipeline
+{
+
+    agent any
+
+    environment
+    {
+        dockerImage = "ayush05/test.2"
+        registry = "ayush05/test.2"
+        registryCredential = "jenkin_docker_token"
+    }
+
+    stages
+    {
+
+        stage('Checkout')
+        {
+
+            steps
+            {
+
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/AyushThanthri/dockerprog.git'
+                    ]]
+                )
+
+            }
+
+        }
+
+        stage('Build Docker Image')
+        {
+
+            steps
+            {
+
+                script
+                {
+                    dockerImage = docker.build(registry)
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+--------------------------------------------------------
+
+========================================================
+STEP 16 - SAVE AND BUILD PIPELINE
+========================================================
+
+Click:
+
+Save
+
+Then click:
+
+Build Now
+
+from left sidebar.
+
+========================================================
+STEP 17 - VERIFY SUCCESS
+========================================================
+
+If build is successful:
+
+✔ Build Success
+
+Example:
+
+#1 Success
+
+========================================================
+COMPLETE COMMAND FLOW
+========================================================
+
+git clone <repo_url>
+
+git add .
+
+git commit -m "Initial Commit"
+
+git push origin main
+
+docker build -t test.2 .
+
+docker run --name cont2 test.2
+
+docker images
+
+docker tag <image_id> username/test.2
+
+docker push username/test.2:latest
+
+========================================================
+IMPORTANT FILES
+========================================================
+
+sample.py
+
+--------------------------------------------------------
+
+print("Hello World")
+
+--------------------------------------------------------
+
+Dockerfile
+
+--------------------------------------------------------
+
+FROM python
+
+WORKDIR /app
+
+COPY . /app
+
+CMD ["python", "sample.py"]
+
+--------------------------------------------------------
+
+========================================================
+IMPORTANT JENKINS TERMS
+========================================================
+
+Pipeline          -> Automation workflow in Jenkins
+Stage             -> Different phases of pipeline
+Agent             -> Machine executing pipeline
+Docker Image      -> Blueprint for container
+Container         -> Running instance of image
+Registry          -> Docker Hub repository
+Checkout          -> Fetch code from GitHub
+Build Now         -> Runs Jenkins job
+
+========================================================
+MOST IMPORTANT COMMANDS
+========================================================
+
+Build Docker Image:
+
+docker build -t test.2 .
+
+--------------------------------------------------------
+
+Run Docker Container:
+
+docker run --name cont2 test.2
+
+--------------------------------------------------------
+
+View Images:
+
+docker images
+
+--------------------------------------------------------
+
+Tag Image:
+
+docker tag <image_id> username/test.2
+
+--------------------------------------------------------
+
+Push Image:
+
+docker push username/test.2:latest
+
+========================================================
+EXPECTED FINAL OUTPUT
+========================================================
+
+Hello World
+
+AND
+
+Jenkins Build Success
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
