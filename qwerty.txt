@@ -650,5 +650,386 @@ Jenkins Build Success
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
+========================================================
+SLACK + JENKINS NOTIFICATION CHEAT SHEET
+========================================================
+
+Experiment:
+Configure Jenkins to send build notifications to Slack.
+
+========================================================
+STEP 1 - INSTALL SLACK
+========================================================
+
+1. Search in browser:
+
+Slack download for Windows
+
+OR install from:
+
+https://slack.com/downloads/windows
+
+2. Install Slack.
+
+3. Login to Slack.
+
+4. Join your workspace/group.
+
+Example:
+
+VVCE
+
+========================================================
+STEP 2 - CREATE SLACK CHANNEL
+========================================================
+
+Inside Slack:
+
+Click + beside Channels
+→ Create Channel
+
+Channel Name:
+
+devops-group-channel
+
+(or any custom name)
+
+Set as:
+
+Public Channel
+
+Click Create.
+
+========================================================
+STEP 3 - OPEN JENKINS
+========================================================
+
+Open Jenkins in browser.
+
+Go to:
+
+Manage Jenkins
+
+========================================================
+STEP 4 - UPDATE PLUGINS
+========================================================
+
+Inside Jenkins:
+
+Manage Jenkins
+→ Plugins / Manage Plugins
+
+Update all existing plugins.
+
+========================================================
+STEP 5 - INSTALL SLACK NOTIFICATION PLUGIN
+========================================================
+
+In plugin search:
+
+Slack Notification
+
+Install plugin.
+
+========================================================
+STEP 6 - CONFIGURE JENKINS SYSTEM
+========================================================
+
+Go to:
+
+Manage Jenkins
+→ Configure System
+
+Scroll and search for:
+
+Slack
+
+========================================================
+STEP 7 - GET WORKSPACE NAME FROM SLACK
+========================================================
+
+Open Slack.
+
+Find workspace URL.
+
+Example:
+
+vvcegroup.slack.com
+
+Copy ONLY:
+
+vvcegroup
+
+NOT:
+
+vvcegroup.slack.com
+
+Paste this in Jenkins:
+
+Workspace Name / Team Subdomain:
+
+vvcegroup
+
+========================================================
+STEP 8 - CREATE JENKINS SLACK APP INTEGRATION
+========================================================
+
+Open browser:
+
+my.slack.com/services/new/jenkins-ci
+
+Select channel:
+
+#devops-group-channel
+
+Click:
+
+Add Jenkins CI Integration
+
+========================================================
+STEP 9 - COPY CREDENTIAL TOKEN
+========================================================
+
+After integration creation:
+
+Scroll to:
+
+Step 3
+
+Copy:
+
+Credential ID / Integration Token
+
+========================================================
+STEP 10 - ADD JENKINS CREDENTIAL
+========================================================
+
+Go back to Jenkins.
+
+Manage Jenkins
+→ Credentials
+
+Click:
+
+Add Credentials
+
+Choose:
+
+Kind: Secret Text
+
+Fill:
+
+Secret:
+<Paste copied Slack token>
+
+ID:
+slack_token
+
+Description:
+Slack Notification Token
+
+Click:
+
+Create / Save
+
+========================================================
+STEP 11 - COMPLETE SLACK CONFIG IN JENKINS
+========================================================
+
+Go back to:
+
+Manage Jenkins
+→ Configure System
+→ Slack Section
+
+Fill:
+
+Workspace:
+vvcegroup
+
+Credential:
+slack_token
+
+Default Channel:
+
+#devops-group-channel
+
+IMPORTANT:
+Channel name MUST start with #
+
+Example:
+
+#devops-group-channel
+
+Save settings.
+
+========================================================
+STEP 12 - CREATE FREESTYLE PROJECT
+========================================================
+
+Jenkins Dashboard
+→ New Item
+
+Project Name:
+
+SlackDemo
+
+Select:
+
+Freestyle Project
+
+Click OK.
+
+========================================================
+STEP 13 - ADD BUILD STEP
+========================================================
+
+Inside project configuration:
+
+Build
+→ Add Build Step
+→ Execute Windows Batch Command
+
+Add command:
+
+java --version
+
+(or any simple command)
+
+Example:
+
+echo Hello World
+
+========================================================
+STEP 14 - CONFIGURE POST BUILD ACTION
+========================================================
+
+Scroll to:
+
+Post-build Actions
+
+Click:
+
+Add Post-build Action
+
+Choose:
+
+Slack Notifications
+
+Enable:
+
+✔ Notify Build Start
+
+✔ Notify Build Success
+
+✔ Notify Every Failure
+
+========================================================
+STEP 15 - SAVE PROJECT
+========================================================
+
+Click:
+
+Save
+
+========================================================
+STEP 16 - RUN BUILD
+========================================================
+
+Click:
+
+Build Now
+
+========================================================
+STEP 17 - VERIFY IN JENKINS
+========================================================
+
+Build should show:
+
+SUCCESS
+
+Green tick / successful build.
+
+========================================================
+STEP 18 - VERIFY IN SLACK
+========================================================
+
+Open Slack.
+
+Open channel:
+
+#devops-group-channel
+
+Expected messages:
+
+Build Started
+
+Build Success
+
+OR
+
+Build Failed
+
+with Jenkins project name.
+
+========================================================
+COMPLETE FLOW SUMMARY
+========================================================
+
+Install Slack
+→ Create Channel
+→ Install Jenkins Slack Plugin
+→ Configure Slack in Jenkins
+→ Add Secret Token
+→ Create Freestyle Project
+→ Add Build Command
+→ Configure Slack Notifications
+→ Build Now
+→ Check Slack Messages
+
+========================================================
+IMPORTANT TERMS
+========================================================
+
+Slack Workspace      -> Main Slack group
+Slack Channel        -> Notification room
+Jenkins Plugin       -> Extension for Jenkins
+Secret Text          -> Stored token credential
+Freestyle Project    -> Simple Jenkins job
+Post-build Action    -> Action after build
+Build Success        -> Successful execution
+Build Failure        -> Failed execution
+
+========================================================
+QUICK CHECKLIST
+========================================================
+
+[ ] Slack installed
+[ ] Joined workspace
+[ ] Channel created
+[ ] Jenkins plugins updated
+[ ] Slack notification plugin installed
+[ ] Workspace name added
+[ ] Slack token copied
+[ ] Secret credential created
+[ ] Channel name added with #
+[ ] Freestyle project created
+[ ] Build command added
+[ ] Slack notifications enabled
+[ ] Build executed
+[ ] Slack message received
+
+========================================================
+EXPECTED FINAL OUTPUT
+========================================================
+
+Jenkins Build SUCCESS
+
+AND
+
+Slack notification message visible in:
+
+#devops-group-channel
+
 
 
