@@ -1033,3 +1033,6 @@ Slack notification message visible in:
 
 
 
+printf "protocol=https\nhost=github.com\n" | git credential-manager erase
+
+
